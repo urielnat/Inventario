@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Inventario" x:Class="Inventario.InventarioPage"
+    Title="La miscelanea">
+	
+     <ContentPage.Content>
+        <StackLayout Padding="50">
+            <StackLayout>
+            <Button HorizontalOptions="Center"  Clicked="agregar_Clicked" Image="gplus.png" BackgroundColor="Transparent" VerticalOptions="Center"></Button>
+            <Label Text="Agregar producto nuevo" HorizontalOptions="Center"></Label>
+            </StackLayout>
+         <StackLayout Padding="50">
+            <Button Image="edit.png" Clicked="cantidad_Clicked" VerticalOptions="StartAndExpand" HorizontalOptions="Center" BackgroundColor="Transparent" ></Button>   
+            <Label Text="Actualizar cantidad" HorizontalOptions="Center"></Label>
+            </StackLayout>   
+             </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

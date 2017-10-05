@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Inventario.CantProdPage">
+	<ContentPage.Content>
+           <StackLayout>
+              <SearchBar x:Name="buscar" SearchButtonPressed="Handle_SearchButtonPressed" IsEnabled="false"></SearchBar>
+              <ListView x:Name="lista" ItemSelected="Handle_ItemSelected" >
+            </ListView>
+            <ActivityIndicator x:Name="carga" WidthRequest="110" HeightRequest="70" IsRunning="True" IsVisible="false" Color="Teal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+              <Button x:Name="conectar" Text="Mostrar/actualizar" HorizontalOptions="CenterAndExpand" TextColor="White" BackgroundColor="#009E0F"></Button>
+        </StackLayout>
+        
+	</ContentPage.Content>
+</ContentPage>

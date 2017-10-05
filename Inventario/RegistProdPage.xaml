@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Inventario.RegistProdPage">
+ <ContentPage.Content>
+    <StackLayout>
+
+          
+
+            <TableView x:Name="tableView" Intent="Form" RowHeight="80" >
+               <TableRoot  >
+                    
+                <TableSection Title="Crear producto">
+                      <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtcod" Text="Código de barras" HorizontalOptions="Start" VerticalOptions="Center" Font="Bold"/>      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="bar.png"/>   
+                            <Entry x:Name="etCodigo" Keyboard="Numeric" Placeholder ="Ingresa Código de barras" HorizontalOptions="FillAndExpand"/>
+                             <Button Image="photo.png" BackgroundColor="Red" WidthRequest="60" HeightRequest="60" BorderRadius="30" Clicked="escaner_Clicked"></Button>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell> 
+                     <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtnom" Text="Nombre" HorizontalTextAlignment="Start"  Font="Bold"/>      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="pencil.png"/>   
+                            <Entry x:Name="etNombre" Placeholder="Ingresa el nombre" Keyboard="Text" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell>     
+                     <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtdesc" Text="Descripción" HorizontalTextAlignment="Start" Font="Bold" />      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="basket.png"/>   
+                            <Entry x:Name="etDescripcion" Placeholder="Ingresa la descripción" Keyboard="Text" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell> 
+                    <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtPrev" Text="Precio de venta" HorizontalTextAlignment="Start" Font="Bold" />      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="money.png"/>   
+                            <Entry x:Name="etPrecioVenta" Placeholder="Ingresa el precio 0.00" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell>     
+
+                    <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtPrec" Text="Precio de compra" HorizontalTextAlignment="Start" Font="Bold" />      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="money.png"/>   
+                            <Entry x:Name="etPrecioCompra" Placeholder="Ingresa el precio 0.00" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell>      
+                       
+                     <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtcant" Text="Cantidad" HorizontalTextAlignment="Start" Font="Bold" />      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="graph.png"/>   
+                            <Entry x:Name="etCantidad" Placeholder="Ingresa la cantidad de productos" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell>  
+                     <ViewCell >
+                         <StackLayout Orientation= "Vertical" > 
+                          <Label x:Name="txtcat" Text="Categoria" HorizontalTextAlignment="Start" Font="Bold" />      
+                        <StackLayout Orientation="Horizontal" Padding="10,0">
+                             <Image Source="category.png"/>   
+                            <Picker x:Name="etCategoria"  Title="Selecciona la categoria" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        </StackLayout>
+                    </ViewCell>  
+                   
+                     
+                
+                        
+               </TableSection>
+               </TableRoot>
+                
+             </TableView>           
+
+          
+         <Button Text="Guardar" HorizontalOptions="CenterAndExpand" TextColor="White" BackgroundColor="#009E0F" Clicked="guardar_Clicked"></Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

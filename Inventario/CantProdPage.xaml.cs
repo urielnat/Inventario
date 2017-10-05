@@ -46,11 +46,11 @@ namespace Inventario
             var unproducto = (producto)e.SelectedItem;
             //Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
            
-            Navigation.PushModalAsync(new CantidadPage(unproducto));
-            Navigation.PopToRootAsync();
+            Navigation.PushModalAsync(new NavigationPage(new CantidadPage(unproducto)));
+            Navigation.PopAsync();
         }
 
-        void llenarLista(){
+        public void llenarLista(){
 			Device.BeginInvokeOnMainThread(async () =>
 			{
 				carga.IsVisible = true;

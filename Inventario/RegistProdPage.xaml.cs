@@ -44,7 +44,7 @@ namespace Inventario
                 etCodigo.IsEnabled = false;
 				auth = true;
 			}
-            if (string.IsNullOrEmpty(etNombre.Text) || !Regex.Match(etNombre.Text, @"^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$").Success )
+            if (string.IsNullOrEmpty(etNombre.Text))
 			{
                 txtnom.TextColor = Color.Red;
 				auth = false;
@@ -56,7 +56,7 @@ namespace Inventario
                 txtnom.TextColor = Color.Black;
 				auth = true;
 			}
-            if (string.IsNullOrEmpty(etDescripcion.Text) || !Regex.Match(etDescripcion.Text, @"^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$").Success)
+            if (string.IsNullOrEmpty(etDescripcion.Text))
 			{
                 txtdesc.TextColor = Color.Red;
 				auth = false;

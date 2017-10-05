@@ -51,7 +51,7 @@ namespace Inventario
 
 
                 HttpResponseMessage response;
-                string sUrl = "http://192.168.0.42:8080/producto/modificar";
+                string sUrl = "http://192.168.0.29:8080/producto/modificar";
                 string sContentType = "application/json"; // or application/xml
 
 
@@ -84,6 +84,9 @@ namespace Inventario
                 if(response.StatusCode==System.Net.HttpStatusCode.OK){
                     System.Diagnostics.Debug.WriteLine("SE GUARDO");
                     await DisplayAlert("Guardar", "¡Producto modificado con exito!", "ok");
+                 //await Navigation.PopModalAsync();
+                //await Navigation.PushAsync(new CantProdPage());
+                Device.BeginInvokeOnMainThread(async () => await Navigation.PushModalAsync(new NavigationPage(new CantProdPage())));
                 await Navigation.PopModalAsync();
                 }else {
                     await DisplayAlert("Error", "el producto no se pudo modificar", "ok");

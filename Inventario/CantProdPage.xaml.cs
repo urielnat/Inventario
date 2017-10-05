@@ -13,49 +13,10 @@ namespace Inventario
         public CantProdPage()
         {
             InitializeComponent();
+            llenarLista();
 			conectar.Clicked += (sender, e) =>
 			{
-				Device.BeginInvokeOnMainThread(async () =>
-				{
-                    carga.IsVisible = true;
-
-					CLienteRest client = new CLienteRest();
-                    var httpclient = await client.Get<Productos>("http://192.168.0.29:8080/producto/leer"); //revizar ip
-					list = new List<producto>();
-					if (httpclient != null)
-					{
-                        carga.IsVisible = false;
-						foreach (var dato in httpclient.data)
-						{
-							list.Add(new producto
-                            {  codigoBarras =(dato as producto).codigoBarras,
-                                nombre = (dato as producto).nombre,
-                                descripcion = (dato as producto).descripcion,
-								cantidad = (dato as producto).cantidad,
-                                precioCompra =(dato as producto).precioCompra,
-                                precioVenta = (dato as producto).precioVenta,
-                                categoria = (dato as producto).categoria
-
-                                                             
-							});
-
-
-
-						}
-                        buscar.IsEnabled = true;
-					}
-					var image = new Image { Source = "tag2.png" };
-                    lista.ItemTemplate = new DataTemplate(typeof(ImageCell));
-					lista.ItemsSource = list;
-					
-					lista.ItemTemplate.SetBinding(TextCell.TextProperty, "nombre");
-					lista.ItemTemplate.SetBinding(TextCell.DetailProperty, "cantidad");
-                    lista.ItemTemplate.SetValue(ImageCell.ImageSourceProperty,image.Source);
-
-
-
-				});
-
+                llenarLista();
 
 			};
         }
@@ -83,7 +44,55 @@ namespace Inventario
         {
             //await DisplayAlert("algo",(e.SelectedItem as producto).descripcion,"ok");
             var unproducto = (producto)e.SelectedItem;
+            //Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
+           
             Navigation.PushModalAsync(new CantidadPage(unproducto));
+            Navigation.PopToRootAsync();
         }
+
+        void llenarLista(){
+			Device.BeginInvokeOnMainThread(async () =>
+			{
+				carga.IsVisible = true;
+
+				CLienteRest client = new CLienteRest();
+				var httpclient = await client.Get<Productos>("http://192.168.0.29:8080/producto/leer"); //revizar ip
+				list = new List<producto>();
+				if (httpclient != null)
+				{
+					carga.IsVisible = false;
+					foreach (var dato in httpclient.data)
+					{
+						list.Add(new producto
+						{
+							codigoBarras = (dato as producto).codigoBarras,
+							nombre = (dato as producto).nombre,
+							descripcion = (dato as producto).descripcion,
+							cantidad = (dato as producto).cantidad,
+							precioCompra = (dato as producto).precioCompra,
+							precioVenta = (dato as producto).precioVenta,
+							categoria = (dato as producto).categoria
+
+
+						});
+
+
+
+					}
+					buscar.IsEnabled = true;
+				}
+				var image = new Image { Source = "tag2.png" };
+				lista.ItemTemplate = new DataTemplate(typeof(ImageCell));
+				lista.ItemsSource = list;
+
+				lista.ItemTemplate.SetBinding(TextCell.TextProperty, "nombre");
+				lista.ItemTemplate.SetBinding(TextCell.DetailProperty, "cantidad");
+				lista.ItemTemplate.SetValue(ImageCell.ImageSourceProperty, image.Source);
+
+
+
+			});
+
+		}
     }
 }

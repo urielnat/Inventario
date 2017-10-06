@@ -7,6 +7,7 @@ using AppBarCode.servicios;
 using GetRest;
 using Inventario.modelos;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using Xamarin.Forms;
 
 namespace Inventario
@@ -120,9 +121,11 @@ namespace Inventario
 				auth = true;
             }
 
-            if(auth){
+            if (auth)
+            {
 
-               
+                if (CrossConnectivity.Current.IsConnected)
+                { 
 
 
                 HttpResponseMessage response;
@@ -130,7 +133,7 @@ namespace Inventario
                 string sContentType = "application/json"; // or application/xml
 
 
-                System.Diagnostics.Debug.WriteLine("###########"+compra);
+                System.Diagnostics.Debug.WriteLine("###########" + compra);
                 List<producto> prod = new List<producto>{
                     new producto{
                         codigoBarras = etCodigo.Text,
@@ -143,55 +146,49 @@ namespace Inventario
 
 
                     }
-                   
+
                    };
 
-                var jsonstring= JsonConvert.SerializeObject(prod);
+                var jsonstring = JsonConvert.SerializeObject(prod);
 
-                jsonstring= jsonstring.Substring(1, jsonstring.Length - 2);
-               System.Diagnostics.Debug.WriteLine(jsonstring);
+                jsonstring = jsonstring.Substring(1, jsonstring.Length - 2);
+                System.Diagnostics.Debug.WriteLine(jsonstring);
 
 
                 HttpClient oHttpClient = new HttpClient();
                 response = await oHttpClient.PostAsync(sUrl, new StringContent(jsonstring, Encoding.UTF8, sContentType));
                 var oTaskPostAsync = oHttpClient.PostAsync(sUrl, new StringContent(jsonstring, Encoding.UTF8, sContentType));
 
-                if(response.StatusCode==System.Net.HttpStatusCode.OK){
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
                     System.Diagnostics.Debug.WriteLine("SE GUARDO");
-					await DisplayAlert("Guardar", "¡Producto creado con exito!", "ok");
+                    await DisplayAlert("Guardar", "¡Producto creado con exito!", "ok");
                     await Navigation.PopToRootAsync();
-                }else if(response.StatusCode==System.Net.HttpStatusCode.NotModified){
-					await DisplayAlert("Error", "el producto ya existe", "ok");
-                
                 }
-               
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
+                {
+                    await DisplayAlert("Error", "El producto ya existe", "ok");
+
+                }
+                }else{
+                    await DisplayAlert("Error de conexion", "No hay coneccion a internet", "ok");
+                }
               }
 			}
 
 
-		void EntryNumber(object sender, EventArgs e)
-		{
-			Entry entry = sender as Entry;
-			String val = entry.Text; //Get Current Text
-
-			if (val.Length > 13)//If it is more than your character restriction
-			{
-				val = val.Remove(val.Length - 1);// Remove Last character 
-				entry.Text = val; //Set the Old value
-			}
-		}
-
+	
 		public void OnTextChanged(object sender, TextChangedEventArgs args)
 		{
 			if (!Regex.IsMatch(args.NewTextValue, "^[0-9]+$", RegexOptions.CultureInvariant))
 				(sender as Entry).Text = Regex.Replace(args.NewTextValue, "[^0-9]", string.Empty);
 			Entry entry = sender as Entry;
-			String val = entry.Text; //Get Current Text
+			String val = entry.Text; 
 
-			if (val.Length > 13)//If it is more than your character restriction
+			if (val.Length > 13)
 			{
-				val = val.Remove(val.Length - 1);// Remove Last character 
-				entry.Text = val; //Set the Old value
+				val = val.Remove(val.Length - 1); 
+				entry.Text = val; 
 			}
 		}
 
@@ -205,29 +202,32 @@ namespace Inventario
 
         void llenarPicker(){
 			Device.BeginInvokeOnMainThread(async () =>
-			{
-
-				CLienteRest client = new CLienteRest();
-				var httpclient = await client.Get<Categorias>("http://192.168.0.29:8080/categoria/leer");
+            {
+                if (CrossConnectivity.Current.IsConnected) {  
+                CLienteRest client = new CLienteRest();
+                var httpclient = await client.Get<Categorias>("http://192.168.0.29:8080/categoria/leer");
                 categoria = new List<Categoria>();
-				if (httpclient != null)
-				{
+                if (httpclient != null)
+                {
 
-					foreach (var dato in httpclient.data)
-					{
+                    foreach (var dato in httpclient.data)
+                    {
                         categoria.Add(new Categoria
-						{
+                        {
                             nombre = (dato as Categoria).nombre,
                             descripcion = (dato as Categoria).descripcion
-						});
-					}
-
-                    foreach(var nom in categoria){
-                        etCategoria.Items.Add(nom.nombre);        
+                        });
                     }
-				}
 
-				
+                    foreach (var nom in categoria)
+                    {
+                        etCategoria.Items.Add(nom.nombre);
+                    }
+                }
+
+
+				}
+				else { await DisplayAlert("Error de conexion", "No hay coneccion a internet", "ok"); }
 
 			});
         }

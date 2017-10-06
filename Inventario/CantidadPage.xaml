@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Inventario.CantidadPage">
 <ContentPage.Content>
         <StackLayout Padding="0,150">
+               <Label Text="{Binding nombre}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Large"></Label>
                <Entry x:Name="cantidad" Keyboard="Numeric" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Placeholder="Inserte la nueva cantidad"/>
                 <Button Text="Modificar" x:Name="guardar" Clicked="Handle_Clicked" HorizontalOptions="CenterAndExpand" TextColor="White" BackgroundColor="#009E0F"></Button>
              </StackLayout>

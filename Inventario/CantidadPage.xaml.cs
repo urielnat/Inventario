@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using GetRest;
 using Inventario.modelos;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using Xamarin.Forms;
 
 namespace Inventario
@@ -21,6 +22,7 @@ namespace Inventario
             InitializeComponent();
             iniciar();
             cantidad.TextChanged += OnTextChanged;
+            BindingContext= pd;
         }
 
         async private void iniciar()
@@ -46,17 +48,21 @@ namespace Inventario
 
         async void Handle_Clicked(object sender, System.EventArgs e)
         {
-            var x = categoria.Where(nom => nom.nombre.Contains(prod.categoria));
-                                  //  DisplayAlert("ok",(x.ElementAt(0).id).ToString(),"ok");   
+            if (CrossConnectivity.Current.IsConnected){
+                if (!string.IsNullOrEmpty(cantidad.Text))
+                {
+
+                    var x = categoria.Where(nom => nom.nombre.Contains(prod.categoria));
+                    //  DisplayAlert("ok",(x.ElementAt(0).id).ToString(),"ok");   
 
 
-                HttpResponseMessage response;
-                string sUrl = "http://192.168.0.29:8080/producto/modificar";
-                string sContentType = "application/json"; // or application/xml
+                    HttpResponseMessage response;
+                    string sUrl = "http://192.168.0.29:8080/producto/modificar";
+                    string sContentType = "application/json"; // or application/xml
 
 
-              
-            List<ProdCat> produ = new List<ProdCat>{
+
+                    List<ProdCat> produ = new List<ProdCat>{
                 new ProdCat{
                     codigoBarras = prod.codigoBarras,
                     nombre = prod.nombre,
@@ -68,44 +74,46 @@ namespace Inventario
 
 
                     }
-                   
+
                    };
 
-                var jsonstring= JsonConvert.SerializeObject(produ);
+                    var jsonstring = JsonConvert.SerializeObject(produ);
 
-                jsonstring= jsonstring.Substring(1, jsonstring.Length - 2);
-               System.Diagnostics.Debug.WriteLine(jsonstring);
+                    jsonstring = jsonstring.Substring(1, jsonstring.Length - 2);
+                    System.Diagnostics.Debug.WriteLine(jsonstring);
 
 
-                HttpClient oHttpClient = new HttpClient();
-            response = await oHttpClient.PutAsync(sUrl, new StringContent(jsonstring, Encoding.UTF8, sContentType));
-                //var oTaskPostAsync = oHttpClient.PostAsync(sUrl, new StringContent(jsonstring, Encoding.UTF8, sContentType));
+                    HttpClient oHttpClient = new HttpClient();
+                    response = await oHttpClient.PutAsync(sUrl, new StringContent(jsonstring, Encoding.UTF8, sContentType));
 
-                if(response.StatusCode==System.Net.HttpStatusCode.OK){
-                    System.Diagnostics.Debug.WriteLine("SE GUARDO");
-                    await DisplayAlert("Guardar", "¡Producto modificado con exito!", "ok");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        System.Diagnostics.Debug.WriteLine("SE GUARDO");
+                        await DisplayAlert("Guardar", "¡Producto modificado con exito!", "ok");
+                        MessagingCenter.Send(this, "change");
+                        await Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "El producto no se pudo modificar", "ok");
 
-				
-                Device.BeginInvokeOnMainThread(async () => await Navigation.PushAsync(new NavigationPage(new CantProdPage())));
-                await Navigation.PopModalAsync();
-                }else {
-                    await DisplayAlert("Error", "el producto no se pudo modificar", "ok");
-                
+                    }
                 }
-                                    
-        }
+            }else{await DisplayAlert("Error de conexion", "No hay coneccion a internet", "ok");
+	   }
+}
 
 		public void OnTextChanged(object sender, TextChangedEventArgs args)
 		{
 			if (!Regex.IsMatch(args.NewTextValue, "^[0-9]+$", RegexOptions.CultureInvariant))
 				(sender as Entry).Text = Regex.Replace(args.NewTextValue, "[^0-9]", string.Empty);
 			Entry entry = sender as Entry;
-			String val = entry.Text; //Get Current Text
+			String val = entry.Text; 
 
-			if (val.Length > 13)//If it is more than your character restriction
+			if (val.Length > 13)
 			{
-				val = val.Remove(val.Length - 1);// Remove Last character 
-				entry.Text = val; //Set the Old value
+				val = val.Remove(val.Length - 1);
+				entry.Text = val; 
 			}
 		}
     }
